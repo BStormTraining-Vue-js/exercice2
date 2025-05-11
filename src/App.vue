@@ -1,6 +1,6 @@
 <script setup>
 import { FloatLabel, InputNumber, Button, DatePicker, Select } from "primevue";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 
 /***** exercice 2.1 *****/
 const h = ref(null);
@@ -17,6 +17,20 @@ const birthDate = ref(null);
 const age = ref(null);
 const ageType = ref('Année');
 const validBirthDate = computed(() => birthDate.value && birthDate.value.getTime() < Date.now());
+const errorMessage = ref(null);
+
+watch(birthDate, () => {
+    if(!birthDate.value) {
+        errorMessage.value = "Ce champs est requis";
+    }
+    else if(birthDate.value.getTime() <= Date.now()) {
+        errorMessage.value = "La valeur doit être plus grande que la date du jour";
+    }
+    else {
+        errorMessage.value = null;
+    }
+})
+
 const computeAge = () => {
     switch(ageType.value) {
         case 'Année':
@@ -97,6 +111,7 @@ const computeAmortizations = () => {
                     <DatePicker dateFormat="dd/mm/yy" v-model="birthDate" />
                     <label>Date de naissance</label>
                 </FloatLabel>
+                <small v-if="errorMessage" class="text-red-400">{{ errorMessage }}</small>
             </div>
             <div>
                 <FloatLabel variant="on">

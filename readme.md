@@ -14,6 +14,7 @@
 - Afficher 1 input pour une date de naissance
 - Afficher un select (annees, jours)
 - Afficher un bouton "Calculer" qui devrait être désactiver si la date est incorrecte ou plus grande que la date du jour
+- A l'aide d'un watcher afficher la date est trop petite ou la date est requise en dessous de l'input
 - Lors du clic, afficher :
     l'age en années ou en mois ou en jours
 
