@@ -1,23 +1,27 @@
-<script setup>
+<script setup lang="ts">
 import { FloatLabel, InputNumber, Button, DatePicker, Select } from "primevue";
 import { computed, ref, watch } from "vue";
+import { Amortization } from "./models/amortization.model.js";
 
 /***** exercice 2.1 *****/
-const h = ref(null);
-const w = ref(null);
-const BMI = ref(null);
-const validBMI = computed(() => h.value && w.value);
-const computeBMI = () => { 
+const h = ref<number|null>(null);
+const w = ref<number|null>(null);
+const BMI = ref<number|null>(null);
+const validBMI = computed<boolean>(() => !!h.value && !!w.value);
+const computeBMI = () => {
+    if(!w.value || !h.value) {
+        return;
+    }
     BMI.value = w.value / ((h.value/100) ** 2);
 }
 /***** end exercice 2.1 *****/
 
 /***** exercice 2.2 *****/
-const birthDate = ref(null);
-const age = ref(null);
-const ageType = ref('Année');
-const validBirthDate = computed(() => birthDate.value && birthDate.value.getTime() < Date.now());
-const errorMessage = ref(null);
+const birthDate = ref<Date|null>(null);
+const age = ref<string|null>(null);
+const ageType = ref<string>('Année');
+const validBirthDate = computed<boolean>(() => !!birthDate.value && birthDate.value.getTime() < Date.now());
+const errorMessage = ref<string|null>(null);
 
 watch(birthDate, () => {
     if(!birthDate.value) {
@@ -32,6 +36,9 @@ watch(birthDate, () => {
 })
 
 const computeAge = () => {
+    if(!birthDate.value) {
+        return;
+    }
     switch(ageType.value) {
         case 'Année':
             const date = new Date();
@@ -51,15 +58,20 @@ const computeAge = () => {
 /***** end exercice 2.2 *****/
 
 /***** exercice 2.3 *****/
-const amount = ref(null);
-const nbYears = ref(null);
-const yearRate = ref(null);
-const amortizations = ref(null);
-const total = ref(null);
+const amount = ref<number|null>(null);
+const nbYears = ref<number|null>(null);
+const yearRate = ref<number|null>(null);
+const amortizations = ref<Amortization[]|null>(null);
+const total = ref<number|null>(null);
 
 const validData = () => amount.value && nbYears.value && yearRate.value;
 
 const computeAmortizations = () => {
+
+    if(!nbYears.value || ! yearRate.value || !amount.value) {
+        return;
+    }
+
     const nbMonths = nbYears.value * 12;
     const monthRate = yearRate.value / 12 / 100;
     const amountPerMonth = ((amount.value * monthRate) / (1 - (1 + monthRate)**(-nbMonths)));
@@ -167,7 +179,7 @@ const computeAmortizations = () => {
                     <td>{{ item.amountRemained.toFixed(2) }}</td>
                 </tr>
             </tbody>
-            <tfoot>
+            <tfoot v-if="total">
                 <tr class="font-bold">
                     <td>Coût total :</td>
                     <td>{{ total.toFixed(2) }}</td>

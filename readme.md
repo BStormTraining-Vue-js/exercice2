@@ -1,4 +1,7 @@
 # Exercice 2
+
+*En typescript*
+
 ## Exercice 2.1
 
 - Afficher 2 inputs
