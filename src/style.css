@@ -1,3 +1,21 @@
 @import 'primeicons/primeicons.css';
 @import "tailwindcss";
 @import "tailwindcss-primeui";
+
+@layer base {
+    table tr {
+        @apply border-b;
+        &:last-child {
+            @apply border-b-2
+        }
+        > th, td {
+            @apply p-1 text-left;
+        }
+    }
+}
+
+@layer components {
+    .panel {
+        @apply border-2 rounded-sm p-3 mb-3 flex gap-3 flex-col
+    }
+}
