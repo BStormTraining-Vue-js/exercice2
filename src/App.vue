@@ -27,7 +27,7 @@ watch(birthDate, () => {
     if(!birthDate.value) {
         errorMessage.value = "Ce champs est requis";
     }
-    else if(birthDate.value.getTime() <= Date.now()) {
+    else if(birthDate.value.getTime() > Date.now()) {
         errorMessage.value = "La valeur doit être plus grande que la date du jour";
     }
     else {
